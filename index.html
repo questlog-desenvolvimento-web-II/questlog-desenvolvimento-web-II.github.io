@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="To-do list gamificada com prazos, XP e penalidades.">
+  <meta name="theme-color" content="#4355B9">
+  <title>Questlog</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- ============ BARRA SUPERIOR: nível, XP e penalidades ============ -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <h1 class="topbar__titulo">Questlog</h1>
+
+      <div class="status" aria-label="Seu progresso">
+        <div class="status__linha">
+          <span class="chip chip--nivel" id="nivel">Nível 1</span>
+          <span class="status__xp" id="xp-texto">0 XP</span>
+          <div class="penalidades" id="penalidades" aria-label="Penalidades ativas"></div>
+        </div>
+        <progress class="barra-xp" id="barra-xp" value="0" max="100" aria-label="Progresso do nível"></progress>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+
+    <!-- ============ FORMULÁRIO DE NOVA TAREFA ============ -->
+    <section class="painel painel--form" aria-labelledby="titulo-form">
+      <h2 class="painel__titulo" id="titulo-form">Nova tarefa</h2>
+
+      <form id="form-tarefa" novalidate>
+        <div class="campo">
+          <input class="campo__input" type="text" id="titulo-tarefa" placeholder=" " maxlength="120" autocomplete="off" required>
+          <label class="campo__label" for="titulo-tarefa">O que precisa ser feito?</label>
+        </div>
+
+        <div class="campo">
+          <input class="campo__input" type="datetime-local" id="prazo-tarefa" placeholder=" " required>
+          <label class="campo__label" for="prazo-tarefa">Prazo</label>
+        </div>
+
+        <p class="rotulo-grupo" id="rotulo-anexos">Anexos</p>
+        <div class="anexo-acoes" role="group" aria-labelledby="rotulo-anexos">
+          <button type="button" class="btn btn--tonal" id="btn-ditar">Ditar título</button>
+          <button type="button" class="btn btn--tonal" id="btn-gravar-video">Gravar vídeo</button>
+          <button type="button" class="btn btn--tonal" id="btn-gravar-audio">Gravar áudio</button>
+          <button type="button" class="btn btn--tonal" id="btn-arquivo">Enviar arquivo</button>
+          <button type="button" class="btn btn--tonal" id="btn-colar">Colar</button>
+          <button type="button" class="btn btn--tonal" id="btn-desenhar">Desenhar</button>
+        </div>
+        <input type="file" id="input-arquivo" multiple hidden>
+
+        <!-- Anexos já adicionados ao rascunho, antes de salvar a tarefa -->
+        <div class="anexos anexos--rascunho" id="anexos-rascunho" aria-live="polite"></div>
+
+        <div class="form__rodape">
+          <button type="reset" class="btn btn--texto" id="btn-limpar">Limpar</button>
+          <button type="submit" class="btn btn--preenchido" id="btn-adicionar">Adicionar tarefa</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ LISTAS ============ -->
+    <div class="listas">
+
+      <section class="painel" aria-labelledby="titulo-pendentes">
+        <h2 class="painel__titulo">
+          <span id="titulo-pendentes">Pendentes</span>
+          <span class="contador" id="contador-pendentes">0</span>
+        </h2>
+        <ul class="lista" id="lista-pendentes"></ul>
+        <p class="vazio" id="vazio-pendentes">Nenhuma tarefa pendente. Adicione uma para começar.</p>
+      </section>
+
+      <section class="painel painel--atrasadas" aria-labelledby="titulo-atrasadas">
+        <h2 class="painel__titulo">
+          <span id="titulo-atrasadas">Atrasadas</span>
+          <span class="contador contador--erro" id="contador-atrasadas">0</span>
+        </h2>
+        <ul class="lista" id="lista-atrasadas"></ul>
+        <p class="vazio" id="vazio-atrasadas">Nenhuma tarefa atrasada.</p>
+      </section>
+
+      <section class="painel" aria-labelledby="titulo-concluidas">
+        <h2 class="painel__titulo">
+          <span id="titulo-concluidas">Concluídas</span>
+          <span class="contador contador--ok" id="contador-concluidas">0</span>
+        </h2>
+        <ul class="lista" id="lista-concluidas"></ul>
+        <p class="vazio" id="vazio-concluidas">Nenhuma tarefa concluída ainda.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============ MODELO DE CARTÃO DE TAREFA (o JS clona este template) ============ -->
+  <template id="tpl-tarefa">
+    <li class="tarefa">
+      <div class="tarefa__topo">
+        <input type="checkbox" class="check" data-campo="check">
+        <div class="tarefa__texto">
+          <h3 class="tarefa__titulo" data-campo="titulo"></h3>
+          <p class="tarefa__prazo" data-campo="prazo"></p>
+        </div>
+        <div class="tarefa__acoes">
+          <button type="button" class="btn btn--texto btn--pequeno" data-acao="ouvir">Ouvir</button>
+          <button type="button" class="btn btn--texto btn--pequeno" data-acao="copiar">Copiar</button>
+          <button type="button" class="btn btn--texto btn--pequeno btn--perigo" data-acao="excluir">Excluir</button>
+        </div>
+      </div>
+      <!-- Anexos ficam abaixo do título, como uma área de visualização -->
+      <div class="anexos" data-campo="anexos"></div>
+    </li>
+  </template>
+
+  <!-- ============ DIÁLOGO: gravação de vídeo/áudio ============ -->
+  <dialog class="dialogo" id="dialogo-gravacao" aria-labelledby="titulo-gravacao">
+    <h2 class="dialogo__titulo" id="titulo-gravacao">Gravando</h2>
+    <video class="dialogo__video" id="preview-video" autoplay muted playsinline></video>
+    <p class="cronometro" id="cronometro" aria-live="off">00:00</p>
+    <p class="dialogo__dica">Gravações com menos de 3 segundos são descartadas.</p>
+    <div class="dialogo__acoes">
+      <button type="button" class="btn btn--texto" id="btn-cancelar-gravacao">Cancelar</button>
+      <button type="button" class="btn btn--preenchido" id="btn-parar-gravacao">Parar e salvar</button>
+    </div>
+  </dialog>
+
+  <!-- ============ DIÁLOGO: desenho com Pointer Events ============ -->
+  <dialog class="dialogo" id="dialogo-desenho" aria-labelledby="titulo-desenho">
+    <h2 class="dialogo__titulo" id="titulo-desenho">Anotação à mão</h2>
+    <canvas class="canvas" id="canvas-desenho" width="600" height="360"></canvas>
+    <p class="dialogo__dica" id="info-ponteiro">Desenhe com mouse, caneta ou toque.</p>
+    <div class="dialogo__acoes">
+      <button type="button" class="btn btn--texto" id="btn-limpar-desenho">Limpar</button>
+      <button type="button" class="btn btn--texto" id="btn-cancelar-desenho">Cancelar</button>
+      <button type="button" class="btn btn--preenchido" id="btn-salvar-desenho">Salvar desenho</button>
+    </div>
+  </dialog>
+
+  <!-- ============ MENSAGENS (erros, avisos, XP ganho) ============ -->
+  <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+
+  <script src="./js/app.js" type="module"></script>
+</body>
+</html>
