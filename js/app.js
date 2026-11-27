@@ -1,8 +1,4 @@
-// =========================================================
-// Questlog: lógica da aplicação (esta parte é sua!)
-// =========================================================
 
-// ---------- Elementos do HTML (já mapeados) ----------
 const el = {
   // topo
   nivel: document.getElementById('nivel'),
@@ -51,6 +47,9 @@ const el = {
 
   // mensagens
   snackbar: document.getElementById('snackbar'),
+
+  // adicionar
+  btnAdicionar: document.getElementById('btn-adicionar')
 };
 
 // ---------- Contrato com o CSS ----------
@@ -78,3 +77,44 @@ const el = {
 // 8. MediaDevices + MediaRecorder (mínimo de 3s)
 // 9. Speech (ditado e leitura)
 // 10. Pointer Events (canvas)
+
+
+let tarefas = [];
+let proximoId = 1;
+let xp = 0;
+const agora = new Date();
+
+function adicionarTarefa(){
+  if(el.titulo.value.trim().length > 0){
+    let nome = el.titulo.value;
+    let dataMax = el.prazo.value;
+
+    let objeto =
+      {
+        id: proximoId,
+        titulo: nome,
+        prazo: dataMax,
+        concluida: false,
+        anexos: [],
+        penalizada: false
+      }
+
+    tarefas.push(objeto)
+    proximoId++;
+    el.titulo.value = "";
+    el.prazo.value = "";
+  }
+  else  
+      return;
+}
+
+el.form.addEventListener("submit", function(e){
+  e.preventDefault();
+  adicionarTarefa();
+
+  console.log(tarefas)
+})
+
+
+
+
