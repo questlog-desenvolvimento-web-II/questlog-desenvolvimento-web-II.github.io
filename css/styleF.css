@@ -1,8 +1,3 @@
-/* =========================================================
-   Questlog — Material Design 3
-   Tema claro/escuro, superfícies tonais, componentes e estados.
-   ========================================================= */
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
 
 :root {
@@ -55,44 +50,6 @@
   --motion: cubic-bezier(.2, 0, 0, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --md-primary: #d0bcff;
-    --md-on-primary: #381e72;
-    --md-primary-container: #4f378b;
-    --md-on-primary-container: #eaddff;
-    --md-secondary: #80dacc;
-    --md-on-secondary: #003731;
-    --md-secondary-container: #005047;
-    --md-on-secondary-container: #9cf2e4;
-    --md-tertiary: #ffb4a8;
-    --md-on-tertiary: #680006;
-    --md-tertiary-container: #8f201d;
-    --md-on-tertiary-container: #ffdad4;
-    --md-error: #ffb4ab;
-    --md-on-error: #690005;
-    --md-error-container: #93000a;
-    --md-on-error-container: #ffdad6;
-    --md-success: #8cdbac;
-    --md-success-container: #005231;
-    --md-on-success-container: #b8f1ce;
-
-    --md-background: #14111b;
-    --md-surface: #14111b;
-    --md-surface-dim: #14111b;
-    --md-surface-bright: #3b3547;
-    --md-surface-container-lowest: #0f0c15;
-    --md-surface-container-low: #1d1925;
-    --md-surface-container: #241f2d;
-    --md-surface-container-high: #2f2939;
-    --md-surface-container-highest: #3a3345;
-    --md-on-surface: #eee7f7;
-    --md-on-surface-variant: #d0c5df;
-    --md-outline: #998da7;
-    --md-outline-variant: #51485d;
-  }
-}
 
 /* Base */
 *, *::before, *::after { box-sizing: border-box; }
@@ -415,4 +372,173 @@ ul { list-style: none; margin: 0; padding: 0; }
 .snackbar.xp {
   background: var(--md-success-container);
   color: var(--md-on-success-container);
+}
+
+
+/* =========================================================
+   Questlog — identidade moderna ciano
+   Tema claro fixo | superfícies limpas | acentos tecnológicos
+   ========================================================= */
+:root {
+  color-scheme: light;
+
+  --md-primary: #007f95;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #b8eff7;
+  --md-on-primary-container: #003640;
+
+  --md-secondary: #286b78;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #c5edf3;
+  --md-on-secondary-container: #061f25;
+
+  --md-tertiary: #426b9a;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #d5e5ff;
+  --md-on-tertiary-container: #102b4d;
+
+  --md-error: #ba454f;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdadc;
+  --md-on-error-container: #41000a;
+
+  --md-success: #187b68;
+  --md-success-container: #b7f1e2;
+  --md-on-success-container: #002117;
+
+  --md-background: #f3f9fb;
+  --md-surface: #f3f9fb;
+  --md-surface-dim: #d6e4e8;
+  --md-surface-bright: #fbfeff;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #f7fcfd;
+  --md-surface-container: #eaf4f6;
+  --md-surface-container-high: #e1eef1;
+  --md-surface-container-highest: #d8e9ed;
+  --md-on-surface: #14272c;
+  --md-on-surface-variant: #496168;
+  --md-outline: #718b92;
+  --md-outline-variant: #c8dce1;
+  --md-scrim: rgb(5 31 38 / 38%);
+
+  --elevation-1: 0 2px 8px rgb(13 73 84 / 7%), 0 1px 2px rgb(13 73 84 / 5%);
+  --elevation-2: 0 12px 32px rgb(13 73 84 / 12%), 0 3px 8px rgb(13 73 84 / 6%);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(184 239 247 / 35%), transparent 34rem),
+    var(--md-background);
+}
+
+.topbar {
+  background: rgb(251 254 255 / 92%);
+  border-bottom-color: #d6e8ec;
+  box-shadow: 0 2px 14px rgb(13 73 84 / 4%);
+  backdrop-filter: blur(16px);
+}
+
+.topbar__titulo {
+  letter-spacing: -.7px;
+  font-weight: 700;
+}
+
+.barra-xp {
+  height: 10px;
+  background: #d5edf1;
+}
+.barra-xp::-webkit-progress-bar { background: #d5edf1; }
+.barra-xp::-webkit-progress-value {
+  background: linear-gradient(90deg, #00a6b8, #087caa 72%, #4c86c6);
+}
+.barra-xp::-moz-progress-bar {
+  background: linear-gradient(90deg, #00a6b8, #087caa 72%, #4c86c6);
+}
+
+.painel {
+  border-color: #d8e8eb;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: var(--elevation-1);
+  border-radius: 22px;
+}
+
+.painel__titulo { letter-spacing: -.35px; }
+
+.painel--atrasadas {
+  border-color: #efc9cc;
+  background: #fffafa;
+}
+
+.campo__input {
+  border-color: #c5d9de;
+  border-radius: 12px;
+  background: #f5fafb;
+}
+.campo__input:focus {
+  border-color: var(--md-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgb(0 127 149 / 12%);
+}
+
+.btn {
+  min-height: 42px;
+  transition: transform 150ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+.btn--preenchido {
+  background: linear-gradient(135deg, #008da3, #087a9d);
+  box-shadow: 0 3px 8px rgb(0 127 149 / 18%);
+}
+.btn--preenchido:hover {
+  filter: none;
+  box-shadow: 0 5px 14px rgb(0 127 149 / 24%);
+  transform: translateY(-1px);
+}
+.btn--tonal {
+  background: #dff4f6;
+  color: #075665;
+}
+.btn--tonal:hover {
+  background: #ccecf0;
+  filter: none;
+}
+
+.tarefa {
+  border-color: #dce9ec;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgb(13 73 84 / 3%);
+}
+.tarefa:hover {
+  border-color: #8bcbd5;
+  box-shadow: 0 7px 18px rgb(13 73 84 / 8%);
+  transform: translateY(-1px);
+}
+.tarefa[data-status="atrasada"] {
+  border-color: #efc4c8;
+  background: #fff4f4;
+}
+
+.check:checked {
+  border-color: #008da3;
+  background-color: #008da3;
+}
+
+.anexo {
+  border-color: #d4e6e9;
+  background: #f4fafb;
+  border-radius: 12px;
+}
+
+.dialogo {
+  border-color: #cfe2e6;
+  background: #fbfeff;
+  box-shadow: 0 24px 70px rgb(5 31 38 / 20%);
+}
+
+:focus-visible {
+  outline-color: #00a0b5;
+}
+
+@media (max-width: 760px) {
+  .app { padding: 20px 16px; }
+  .topbar__inner { padding: 12px 16px; }
 }
